@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 # Create your views here.
 
 def login(request):
-    template_data = {'title': 'Sign Up'}
+    template_data = {'title': 'Log In'}
 
     if request.user.is_authenticated:
         return redirect('home')
@@ -22,4 +22,3 @@ def login(request):
         if user is not None:
             auth_login(request, user)
             return redirect('home')
-
