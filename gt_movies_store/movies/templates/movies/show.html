@@ -2,85 +2,54 @@
 {% block content %}
 {% load static %}
 <div class="p-3">
-  <div class="container">
-    <div class="row mt-3">
-      <div class="col-md-6 mx-auto mb-3">
-        <h2>{{ template_data.movie.name }}</h2>
-        <hr />
+  <div class="container mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-xl font-semibold">{{ template_data.movie.name }}</h2>
+        <hr class="my-2" />
         <p><b>Description:</b> {{ template_data.movie.description }}</p>
         <p><b>Price:</b> ${{ template_data.movie.price }}</p>
-        <p class="card-text">
-          <form method="post" action="{% url 'cart.add' id=template_data.movie.id %}">
-            <div class="row">
-              {% csrf_token %}
-              <div class="col-auto">
-                <div class="input-group col-auto">
-                  <div class="input-group-text">Quantity</div>
-                  <input type="number" min="1" max="10" class="form-control quantity-input" name="quantity" value="1">
-                </div>
-              </div>
-              <div class="col-auto">
-                <button class="btn bg-dark text-white" type="submit">Add to cart</button>
-              </div>
-            </div>
-          </form>
-        </p>
-
-        <h2>Reviews</h2>
-        <hr />
-        <ul class="list-group">
+        <form method="post" action="{% url 'cart.add' id=template_data.movie.id %}" class="space-y-4">
+          {% csrf_token %}
+          <div class="flex items-center gap-2">
+            <span class="px-3 bg-gray-200 text-gray-700">Quantity</span>
+            <input type="number" min="1" max="10" class="p-2 border rounded-lg focus:ring focus:ring-gray-300" name="quantity" value="1">
+            <button class="px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-700" type="submit">Add to cart</button>
+          </div>
+        </form>
+        <h2 class="text-xl font-semibold mt-6">Reviews</h2>
+        <hr class="my-2" />
+        <ul class="space-y-4">
           {% for review in template_data.reviews %}
-          <li class="list-group-item pb-3 pt-3">
-            <h5 class="card-title">
-              Review by {{ review.user.username }}
-            </h5>
-            <h6 class="card-subtitle mb-2 text-muted">
-              {{ review.date }}
-            </h6>
-            <p class="card-text">{{ review.comment }}</p>
+          <li class="p-4 bg-gray-100 rounded-lg shadow-md">
+            <h5 class="font-semibold">Review by {{ review.user.username }}</h5>
+            <h6 class="text-gray-600 text-sm">{{ review.date }}</h6>
+            <p>{{ review.comment }}</p>
             {% if user.is_authenticated and user == review.user %}
-            <a class="btn btn-primary"
-              href="{% url 'movies.edit_review' id=template_data.movie.id review_id=review.id %}">
-              Edit
-            </a>
-            <a class="btn btn-danger"
-              href="{% url 'movies.delete_review' id=template_data.movie.id review_id=review.id %}">
-              Delete
-            </a>
+            <div class="flex gap-2 mt-2">
+              <a class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500" href="{% url 'movies.edit_review' id=template_data.movie.id review_id=review.id %}">Edit</a>
+              <a class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500" href="{% url 'movies.delete_review' id=template_data.movie.id review_id=review.id %}">Delete</a>
+            </div>
             {% endif %}
           </li>
           {% endfor %}
         </ul>
-
         {% if user.is_authenticated %}
-        <div class="container mt-4">
-          <div class="row justify-content-center">
-            <div class="col-12">
-              <div class="card shadow p-3 mb-4 rounded">
-                <div class="card-body">
-                  <b class="text-start">Create a review</b><br /><br />
-                  <form method="POST" action="{% url 'movies.create_review' id=template_data.movie.id %}">
-                    {% csrf_token %}
-                    <p>
-                      <label for="comment">Comment:</label>
-                      <textarea name="comment" required class="form-control" id="comment"></textarea>
-                    </p>
-
-                    <div class="text-center">
-                      <button type="submit" class="btn bg-dark text-white">
-                        Add Review
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              </div>
+        <div class="mt-6 p-6 bg-white rounded-lg shadow-md">
+          <h3 class="font-semibold">Create a review</h3>
+          <form method="POST" action="{% url 'movies.create_review' id=template_data.movie.id %}" class="space-y-4">
+            {% csrf_token %}
+            <div>
+              <label for="comment" class="block font-medium">Comment:</label>
+              <textarea name="comment" required class="w-full p-2 border rounded-lg focus:ring focus:ring-gray-300" id="comment"></textarea>
             </div>
-          </div>
+            <button type="submit" class="px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-700">Add Review</button>
+          </form>
         </div>
         {% endif %}
       </div>
-      <div class="col-md-6 mx-auto mb-3 text-center">
-        <img src="{{ template_data.movie.image.url }}" class="rounded img-card-400" />
+      <div class="flex justify-center items-center">
+        <img src="{{ template_data.movie.image.url }}" class="rounded-lg w-full max-w-md object-cover" />
       </div>
     </div>
   </div>
