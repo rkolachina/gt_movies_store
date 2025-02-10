@@ -1,22 +1,23 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="p-3 mt-4">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <div class="card shadow p-3 mb-4 rounded">
-          <div class="card-body">
-            <h2>Sign Up</h2>
-            <hr />
-            <form method="POST">
-              {% csrf_token %}
-              {{ template_data.form.as_p }}
-              <button type="submit" class="btn bg-dark text-white">
-                Sign Up
-              </button>
-            </form>
+  <div class="container mx-auto flex justify-center">
+    <div class="w-full max-w-md">
+      <div class="bg-white shadow-lg rounded-lg p-6">
+        <h2 class="text-2xl font-bold">Sign Up</h2>
+        <hr class="border-gray-300 my-2" />
+
+        <form method="POST">
+          {% csrf_token %}
+          <div class="space-y-4">
+            {{ template_data.form.as_p }}
           </div>
-        </div>
+          <div class="text-center mt-4">
+            <button type="submit" class="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 transition">
+              Sign Up
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

@@ -1,39 +1,39 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="p-3">
-  <div class="container">
-    <div class="row mt-3">
-      <div class="col mx-auto mb-3">
-        <h2>My Orders</h2>
-        <hr />
+  <div class="container mx-auto">
+    <div class="mt-3">
+      <div class="mx-auto mb-3">
+        <h2 class="text-2xl font-bold">My Orders</h2>
+        <hr class="border-gray-300 my-2" />
         {% for order in template_data.orders %}
-        <div class="card mb-4">
-          <div class="card-header">
+        <div class="mb-4 border border-gray-300 rounded-lg shadow-lg">
+          <div class="bg-gray-200 px-4 py-2 font-semibold">
             Order #{{ order.id }}
           </div>
-          <div class="card-body">
-            <b>Date:</b> {{ order.date }}<br />
-            <b>Total:</b> ${{ order.total }}<br />
-            <table class="table table-bordered table-striped text-center mt-3">
+          <div class="p-4">
+            <p><b>Date:</b> {{ order.date }}</p>
+            <p><b>Total:</b> ${{ order.total }}</p>
+            <table class="w-full border border-gray-300 text-center mt-3">
               <thead>
-                <tr>
-                  <th scope="col">Item ID</th>
-                  <th scope="col">Movie</th>
-                  <th scope="col">Price</th>
-                  <th scope="col">Quantity</th>
+                <tr class="bg-gray-100">
+                  <th class="border border-gray-300 p-2">Item ID</th>
+                  <th class="border border-gray-300 p-2">Movie</th>
+                  <th class="border border-gray-300 p-2">Price</th>
+                  <th class="border border-gray-300 p-2">Quantity</th>
                 </tr>
               </thead>
               <tbody>
                 {% for item in order.item_set.all %}
-                <tr>
-                  <td>{{ item.movie.id }}</td>
-                  <td>
-                    <a class="link-dark" href="{% url 'movies.show' id=item.movie.id %}">                    
+                <tr class="border border-gray-300">
+                  <td class="border border-gray-300 p-2">{{ item.movie.id }}</td>
+                  <td class="border border-gray-300 p-2">
+                    <a class="text-blue-600 hover:underline" href="{% url 'movies.show' id=item.movie.id %}">
                       {{ item.movie.name }}
                     </a>
                   </td>
-                  <td>${{ item.movie.price }}</td>
-                  <td>{{ item.quantity }}</td>
+                  <td class="border border-gray-300 p-2">${{ item.movie.price }}</td>
+                  <td class="border border-gray-300 p-2">{{ item.quantity }}</td>
                 </tr>
                 {% endfor %}
               </tbody>

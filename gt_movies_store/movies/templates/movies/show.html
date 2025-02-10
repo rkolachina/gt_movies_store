@@ -12,7 +12,7 @@
         <form method="post" action="{% url 'cart.add' id=template_data.movie.id %}" class="space-y-4">
           {% csrf_token %}
           <div class="flex items-center gap-2">
-            <span class="px-3 bg-gray-200 text-gray-700">Quantity</span>
+            <span class="px-3">Quantity:</span>
             <input type="number" min="1" max="10" class="p-2 border rounded-lg focus:ring focus:ring-gray-300" name="quantity" value="1">
             <button class="px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-700" type="submit">Add to cart</button>
           </div>
