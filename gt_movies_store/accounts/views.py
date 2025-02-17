@@ -4,6 +4,8 @@ from .forms import CustomUserCreationForm, CustomErrorList
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password
+from .forms import CustomPasswordResetForm
 
 @login_required
 def logout(request):
@@ -39,6 +41,31 @@ def signup(request):
         else:
             template_data['form'] = form
             return render(request, 'accounts/signup.html', {'template_data': template_data})
+
+def reset_password(request):
+    template_data = {}
+    template_data['title'] = 'Reset Password'
+
+    if request.method == 'GET':
+        template_data['form'] = CustomPasswordResetForm()
+        return render(request, 'accounts/password_reset.html', {'template_data': template_data})
+    elif request.method == 'POST':
+        form = CustomPasswordResetForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['email']
+            new_password = form.cleaned_data['password1']
+            try:
+                user = User.objects.get(username=username)
+                user.password = make_password(new_password)
+                user.save()
+                print(f"Password updated for user: {user.username}")
+                return redirect('accounts.login')
+            except User.DoesNotExist:
+                form.add_error('email', 'User with this email does not exist.')
+        else:
+            print(form.errors)  # Log form errors
+            template_data['form'] = form
+            return render(request, 'accounts/password_reset.html', {'template_data': template_data})
 
 @login_required
 def orders(request):
